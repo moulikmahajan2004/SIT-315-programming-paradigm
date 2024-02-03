@@ -1,0 +1,72 @@
+//mentiong the pin for the each device  and it is using the polling which will increase the problem 
+const uint8_t BTN_PIN = 2;//pin for the button
+const uint8_t LED_PIN = 13; //pin for led
+
+//setting up the state for button and bulb
+uint8_t buttonPrevState = LOW;
+uint8_t ledState = LOW;
+
+
+void setup()
+{
+  //mention the pin button to give iutput
+  pinMode(BTN_PIN, INPUT_PULLUP);
+  //mentioning the led to give the output
+  pinMode(LED_PIN, OUTPUT);
+  //setting up the baudrate
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  //mentiong the button state to the variable
+  uint8_t buttonState = digitalRead(BTN_PIN);
+  
+  //printing the values to the serial monitor
+  Serial.print(buttonState);
+  Serial.print(buttonPrevState);
+  Serial.print(ledState);
+  Serial.println("");
+  
+  
+  //if new state does not meet with the old one then change the led state
+  if(buttonState != buttonPrevState)
+  {
+    ledState = !ledState;
+    digitalWrite(LED_PIN, ledState);
+  }
+
+  buttonPrevState = buttonState;
+    
+  //deLay of 500 millisecond
+  delay(500);
+}
+
+//----------------------------------------**NEW CODE UPDTAED AFTER CHANGEING THE ULTRATION WE NEED TO ADD INTERRUPT FOR BETTER WORKING OF IT ----------------------------------
+//PIN FOR THE LED AND THE BUTTON UING THE INTERRUPT TO IMPROVE 
+//EFFICIENCY OF THE CODE SOIT ONLY RUN WHEN THE CHANGE OCCUR
+const uint8_t BTN_PIN = 2;
+const uint8_t LED_PIN = 13;
+uint8_t ledState = LOW; 
+
+void setup()
+{
+  //PIN USEAGE OF LEAD AS OUTPUT AND BUTTON AS INPUT
+  pinMode(BTN_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
+  //MENTION THE INTERRUPT
+  attachInterrupt(digitalPinToInterrupt(BTN_PIN), LED, CHANGE); //ADDING THE INTERRUPT SO THE LED WORK PROPERLY
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  //NO NEED OF CONITNOUS ITERATION BASED ON THE CHANGE LED FLICKER WHEN BUTTON IS PRESSED AND 
+}
+//INTERRUPT FUNCITON
+void LED()
+{
+  ledState = !ledState;
+  digitalWrite(LED_PIN, ledState);
+}
+
